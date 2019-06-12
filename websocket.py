@@ -19,6 +19,7 @@ def client_left(client, server):
 # Called when a client sends a message
 def message_received(client, server, message_data):
     try:
+        print(message_data)
         message_data = json.loads(message_data)
         # check required parament
         message_data["access_token"]
@@ -34,7 +35,7 @@ def message_received(client, server, message_data):
                 "chatroom_secret" : message_data["chatroom_secret"],
                 "timestamp" : now.isoformat()
             }
-            server.send_message_to_all(json.dumps(data))
+            server.send_message_to_all(json.dumps(data, ensure_ascii=False))
         else:
             print("insert message to db error")
     except KeyError as e:
@@ -46,7 +47,7 @@ def message_received(client, server, message_data):
 
 
 PORT=9500
-server = WebsocketServer(PORT)
+server = WebsocketServer(PORT, host='0.0.0.0')
 server.set_fn_new_client(new_client)
 server.set_fn_client_left(client_left)
 server.set_fn_message_received(message_received)
