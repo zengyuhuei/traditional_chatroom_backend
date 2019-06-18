@@ -4,7 +4,7 @@ from db import DB
 import facebook
 import uuid
 import datetime
-
+from pytz import timezone
 class Model:
     def __init__(self):
         self._con = config()
@@ -93,5 +93,5 @@ class Model:
         result = list(self._message_table.find({'chatroom_secret': chatroom_secret}, {"_id": 0, "facebook_id": 0}))
         for message in result:
             if type(message["timestamp"] == type(datetime.datetime.now())):
-                message["timestamp"] = message["timestamp"].strftime("%Y-%m-%d %H:%M:%S")
+                message["timestamp"] = message["timestamp"].astimezone(timezone('Asia/Shanghai')).strftime("%Y-%m-%d %H:%M:%S")
         return result 
