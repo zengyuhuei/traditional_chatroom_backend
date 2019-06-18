@@ -25,7 +25,7 @@ def message_received(client, server, message_data):
         message_data["access_token"]
         message_data["chatroom_secret"]
         message_data["message"]
-        now = datetime.datetime.now().replace(tzinfo=timezone('Asia/Shanghai'))
+        now = datetime.datetime.now().astimezone(timezone('Asia/Shanghai'))
         user_name = model.insert_message_to_chatroom_db(message_data["access_token"], message_data["chatroom_secret"], message_data["message"], now)
         if user_name != None:
             print("Client(%d) said: %s" % (client['id'], message_data))
