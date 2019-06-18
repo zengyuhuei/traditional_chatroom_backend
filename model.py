@@ -3,6 +3,7 @@ from config.Config import Config as config
 from db import DB
 import facebook
 import uuid
+import datetime
 
 class Model:
     def __init__(self):
@@ -85,4 +86,12 @@ class Model:
             messge_to_db = {"facebook_id" : user["id"] , "name" : user["name"], "message" : message, "chatroom_secret":chatroom_secret, "timestamp": timestamp}
             self._message_table.insert_one(messge_to_db)
             result = user["name"]
+        return result 
+
+    def get_message_by_secret(self, chatroom_secret):
+        result = None
+        result = list(self._message_table.find({'chatroom_secret': chatroom_secret}, {"_id": 0, "facebook_id": 0}))
+        for message in result:
+            if type(message["timestamp"] == type(datetime.datetime.now())):
+                message["timestamp"] = message["timestamp"].strftime("%Y-%m-%d %H:%M:%S")
         return result 

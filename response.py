@@ -17,4 +17,4 @@ class Response:
         return self._data
 
     def get_json(self):
-        return json.dumps(self._data)
+        return json.dumps(self._data, ensure_ascii=False)

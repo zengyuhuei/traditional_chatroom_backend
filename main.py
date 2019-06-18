@@ -71,6 +71,18 @@ def get_chatroom_info():
         response.error("invalid chatroom_secret")
         return response.get_json()
 
+@app.route('/getMessage', methods=['GET'])
+def get_message():
+    response = Response()
+    chatroom_secret = request.args.get('chatroom_secret')
+    messages = model.get_message_by_secret(chatroom_secret)
+    if messages!=None :
+        response.success(messages)
+        return response.get_json()
+    else :
+        response.error("invalid chatroom_secret")
+        return response.get_json()
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9600, debug=True)
